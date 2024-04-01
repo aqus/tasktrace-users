@@ -1,0 +1,45 @@
+server:
+  port: 8091
+
+spring:
+  application:
+    name: tasktrace-users
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8180/realms/tasktrace/protocol/openid-connect/certs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "metrics,health,logfile"
+  health:
+    defaults:
+      enabled: true
+
+logging:
+  file:
+    name: ./logs/tasktrace-users.log
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8001/eureka
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    leaseRenewalIntervalInSeconds: 30
+    leaseExpirationDurationInSeconds: 90
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+  server:
+    eviction-interval-timer-in-ms: 15000
+
+app:
+  keycloak:
+    server-url: http://localhost:8180/
+    client-id: tasktrace-gateway
+    client-secret: Wsg1oUdrHZlx83U7SEFUfunnmF8414Z9
